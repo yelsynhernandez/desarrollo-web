@@ -1,3 +1,5 @@
+Link del proyecto: https://tarea02yh.netlify.app/
+
 # Tarea 2 - Melodía Store en React
 
 Universidad Mariano Gálvez, Centro Universitario El Naranjo
