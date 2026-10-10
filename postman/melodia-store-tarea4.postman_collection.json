@@ -1,0 +1,116 @@
+{
+  "info": {
+    "_postman_id": "b7e2c1a4-5d6f-4a8b-9c0d-1e2f3a4b5c6d",
+    "name": "Melodía Store - Tarea 4",
+    "description": "Colección de pruebas de la API REST de Melodía Store (Node.js + Express + MongoDB). Antes de usarla, ajusta la variable {{baseUrl}} y coloca un id real en {{productoId}} (obtenido del listado o de una creación).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "productoId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Yelsyn Adrid Hernández Crúz\",\n  \"correo\": \"yelsyn@correo.com\",\n  \"contrasena\": \"123456\",\n  \"rol\": \"admin\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"yelsyn@correo.com\",\n  \"contrasena\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Productos (entidad de negocio)",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos"
+          }
+        },
+        {
+          "name": "Listar por categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos?categoria=percusion"
+          }
+        },
+        {
+          "name": "Buscar por texto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos?busqueda=guitarra"
+          }
+        },
+        {
+          "name": "Obtener producto por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/productos/{{productoId}}"
+          }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/productos",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Teclado Sintetizador 61 Teclas\",\n  \"categoria\": \"audio\",\n  \"precio\": \"Q 2,150.00\",\n  \"descripcion\": \"Sintetizador portátil con 61 teclas y 400 tonos.\",\n  \"especificaciones\": [\n    { \"etiqueta\": \"Teclas\", \"valor\": \"61\" },\n    { \"etiqueta\": \"Tonos\", \"valor\": \"400\" }\n  ],\n  \"imagen\": \"image/mesa-mezcladora.png\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Actualizar producto (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/productos/{{productoId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"precio\": \"Q 1,999.00\",\n  \"descripcion\": \"Precio actualizado en la base de datos.\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/productos/{{productoId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
