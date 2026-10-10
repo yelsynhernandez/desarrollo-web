@@ -8,12 +8,14 @@ construida con **Node.js, Express y MongoDB (Mongoose)**, reemplazando los datos
 autenticación simulados por peticiones asíncronas contra el backend y sincronizando las
 respuestas con el estado global (`useContext` + `useReducer`).
 
+Link del repositorio de git: https://github.com/yelsynhernandez/desarrollo-web
+
 ## Aplicaciones desplegadas
 
 | Servicio | URL |
 | --- | --- |
-| Frontend (Render Static) | _pendiente de publicar_ |
-| Backend (Render) | _pendiente de publicar_ |
+| Frontend (Render Static) | https://desarrollo-web-gdj0.onrender.com/ |
+| Backend (Render) | https://be-melodia-store.onrender.com/ |
 
 En local: frontend `http://localhost:5173` · backend `http://localhost:5000`.
 
