@@ -1,0 +1,105 @@
+{
+  "info": {
+    "_postman_id": "c3f8d2b5-6e7a-4b9c-8d1e-2f3a4b5c6d7e",
+    "name": "Melodía Store - Tarea 5 (JWT)",
+    "description": "Pruebas de autenticación con JSON Web Tokens. 1) Ejecuta 'Login (obtener token)': el script guarda el JWT en la variable {{token}}. 2) Ejecuta 'Endpoint protegido con token válido' (200). 3) Espera más de 5 minutos y ejecuta 'Endpoint protegido con token expirado' (401 token_expired). Ajusta {{baseUrl}} según el entorno (local o Render).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://be-melodia-store.onrender.com/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Login (obtener token)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const datos = pm.response.json();",
+              "pm.test('Retorna un token', () => pm.expect(datos.token).to.be.a('string'));",
+              "pm.collectionVariables.set('token', datos.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"correo\": \"yelsyn@correo.com\",\n  \"contrasena\": \"123456\"\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "2. Endpoint protegido con token válido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+        },
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/productos/admin/listado"
+      }
+    },
+    {
+      "name": "3. Endpoint protegido con token expirado (tras 5 minutos)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));",
+              "pm.test('error = token_expired', () => pm.expect(pm.response.json().error).to.eql('token_expired'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+        },
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/productos/admin/listado",
+        "description": "Ejecutar después de dejar transcurrir más de 5 minutos desde el login. Respuesta esperada: 401 { \"error\": \"token_expired\", \"message\": \"La sesión ha expirado o ya no es válida. Por favor, inicie sesión nuevamente.\" }"
+      }
+    },
+    {
+      "name": "4. Endpoint protegido sin token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('Status 401', () => pm.response.to.have.status(401));"]
+          }
+        }
+      ],
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/productos/admin/listado"
+      }
+    }
+  ]
+}

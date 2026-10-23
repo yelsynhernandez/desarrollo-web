@@ -1,12 +1,14 @@
 import { Container, Card, Badge, ListGroup, Button, Alert } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexto/AuthContext'
 
-function Perfil({ irA }) {
+function Perfil() {
+  const navigate = useNavigate()
   const { isAuthenticated, usuario, fechaAcceso, cerrarSesion } = useAuth()
 
   const cerrarYVolver = () => {
     cerrarSesion()
-    irA('inicio')
+    navigate('/')
   }
 
   if (!isAuthenticated || !usuario) {
@@ -19,7 +21,7 @@ function Perfil({ irA }) {
               <Alert variant="warning" className="mb-4">
                 Aún no has iniciado sesión. Ingresa para ver tu perfil.
               </Alert>
-              <Button variant="primary" onClick={() => irA('login')}>
+              <Button variant="primary" onClick={() => navigate('/login')}>
                 Iniciar Sesión
               </Button>
             </Card.Body>
@@ -76,13 +78,13 @@ function Perfil({ irA }) {
         </Card>
 
         <div className="text-center mb-4">
-          <Button variant="primary" className="me-3" onClick={() => irA('admin')}>
+          <Button variant="primary" className="me-3" onClick={() => navigate('/admin')}>
             Administrar productos
           </Button>
           <Button variant="danger" className="me-3" onClick={cerrarYVolver}>
             Cerrar Sesión
           </Button>
-          <Button variant="outline-primary" onClick={() => irA('inicio')}>
+          <Button variant="outline-primary" onClick={() => navigate('/')}>
             Seguir comprando
           </Button>
         </div>

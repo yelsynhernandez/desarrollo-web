@@ -1,8 +1,10 @@
 import { Container, Row, Col, Button, Carousel, Card, Alert, Spinner } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import CardProducto from '../components/CardProducto'
 import useProductos from '../hooks/useProductos'
 
-function Inicio({ irA }) {
+function Inicio() {
+  const navigate = useNavigate()
   const destacados = [
     {
       imagen: 'image/bateria-acustica.jpg',
@@ -66,7 +68,7 @@ function Inicio({ irA }) {
             Tienda de instrumentos musicales, audio profesional e iluminación escénica.
             Encuentra todo lo que necesitas para tu pasión musical.
           </p>
-          <Button variant="primary" size="lg" onClick={() => irA('percusion')}>
+          <Button variant="primary" size="lg" onClick={() => navigate('/percusion')}>
             Explorar productos
           </Button>
         </Container>
@@ -128,7 +130,7 @@ function Inicio({ irA }) {
                   <Button
                     variant="outline-primary"
                     className="mt-auto"
-                    onClick={() => irA(c.id)}
+                    onClick={() => navigate(`/${c.id}`)}
                   >
                     Ver productos
                   </Button>

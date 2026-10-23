@@ -1,28 +1,31 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexto/AuthContext'
 
-function MiNavbar({ pagina, irA }) {
+function MiNavbar() {
   const { isAuthenticated, usuario, cerrarSesion } = useAuth()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   const secciones = [
-    { id: 'inicio', etiqueta: 'Inicio' },
-    { id: 'percusion', etiqueta: 'Percusión' },
-    { id: 'viento', etiqueta: 'Viento' },
-    { id: 'audio', etiqueta: 'Audio Profesional' },
-    { id: 'iluminacion', etiqueta: 'Iluminación' },
-    { id: 'cuerdas', etiqueta: 'Cuerdas' },
-    { id: 'registro', etiqueta: 'Registrarse' }
+    { ruta: '/', etiqueta: 'Inicio' },
+    { ruta: '/percusion', etiqueta: 'Percusión' },
+    { ruta: '/viento', etiqueta: 'Viento' },
+    { ruta: '/audio', etiqueta: 'Audio Profesional' },
+    { ruta: '/iluminacion', etiqueta: 'Iluminación' },
+    { ruta: '/cuerdas', etiqueta: 'Cuerdas' },
+    { ruta: '/registro', etiqueta: 'Registrarse' }
   ]
 
   const cerrarYVolver = () => {
     cerrarSesion()
-    irA('inicio')
+    navigate('/')
   }
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" sticky="top">
       <Container>
-        <Navbar.Brand onClick={() => irA('inicio')}>
+        <Navbar.Brand onClick={() => navigate('/')}>
           Melodía Store
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="menu-principal" />
@@ -30,9 +33,9 @@ function MiNavbar({ pagina, irA }) {
           <Nav className="ms-auto">
             {secciones.map((s) => (
               <Nav.Link
-                key={s.id}
-                active={pagina === s.id}
-                onClick={() => irA(s.id)}
+                key={s.ruta}
+                active={pathname === s.ruta}
+                onClick={() => navigate(s.ruta)}
               >
                 {s.etiqueta}
               </Nav.Link>
@@ -45,10 +48,10 @@ function MiNavbar({ pagina, irA }) {
                 <Navbar.Text className="text-white">
                   Hola, {usuario.nombre.split(' ')[0]}
                 </Navbar.Text>
-                <Nav.Link active={pagina === 'perfil'} onClick={() => irA('perfil')}>
+                <Nav.Link active={pathname === '/perfil'} onClick={() => navigate('/perfil')}>
                   Mi Perfil
                 </Nav.Link>
-                <Nav.Link active={pagina === 'admin'} onClick={() => irA('admin')}>
+                <Nav.Link active={pathname === '/admin'} onClick={() => navigate('/admin')}>
                   Administrar
                 </Nav.Link>
                 <Button
@@ -61,7 +64,7 @@ function MiNavbar({ pagina, irA }) {
                 </Button>
               </>
             ) : (
-              <Nav.Link active={pagina === 'login'} onClick={() => irA('login')}>
+              <Nav.Link active={pathname === '/login'} onClick={() => navigate('/login')}>
                 Iniciar Sesión
               </Nav.Link>
             )}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexto/AuthContext'
 import MiNavbar from './components/MiNavbar'
 import Footer from './components/Footer'
@@ -14,29 +14,27 @@ import Perfil from './pages/Perfil'
 import AdminProductos from './pages/AdminProductos'
 
 function App() {
-  const [pagina, setPagina] = useState('inicio')
-
-  const irA = (seccion) => {
-    setPagina(seccion)
-  }
-
   return (
-    <AuthProvider>
-      <MiNavbar pagina={pagina} irA={irA} />
+    <BrowserRouter>
+      <AuthProvider>
+        <MiNavbar />
 
-      {pagina === 'inicio' && <Inicio irA={irA} />}
-      {pagina === 'percusion' && <Percusion />}
-      {pagina === 'viento' && <Viento />}
-      {pagina === 'audio' && <Audio />}
-      {pagina === 'iluminacion' && <Iluminacion />}
-      {pagina === 'cuerdas' && <Cuerdas />}
-      {pagina === 'registro' && <Registro />}
-      {pagina === 'login' && <Login irA={irA} />}
-      {pagina === 'perfil' && <Perfil irA={irA} />}
-      {pagina === 'admin' && <AdminProductos irA={irA} />}
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/percusion" element={<Percusion />} />
+          <Route path="/viento" element={<Viento />} />
+          <Route path="/audio" element={<Audio />} />
+          <Route path="/iluminacion" element={<Iluminacion />} />
+          <Route path="/cuerdas" element={<Cuerdas />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/admin" element={<AdminProductos />} />
+        </Routes>
 
-      <Footer />
-    </AuthProvider>
+        <Footer />
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

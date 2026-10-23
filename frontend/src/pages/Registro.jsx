@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Container, Form, Button, Alert, Card, Spinner } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import cliente from '../api/cliente'
 
-function Registro({ irA }) {
+function Registro() {
+  const navigate = useNavigate()
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
@@ -62,7 +64,7 @@ function Registro({ irA }) {
             <p className="mb-2">
               Tu usuario fue guardado en MongoDB. Ya puedes iniciar sesión.
             </p>
-            <Button variant="success" onClick={() => irA('login')}>
+            <Button variant="success" onClick={() => navigate('/login')}>
               Ir a Iniciar Sesión
             </Button>
           </Alert>

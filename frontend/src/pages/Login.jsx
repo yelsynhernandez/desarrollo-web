@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Container, Form, Button, Alert, Card, Spinner } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import cliente from '../api/cliente'
 import { useAuth } from '../contexto/AuthContext'
 
-function Login({ irA }) {
-  const { iniciarSesion } = useAuth()
+function Login() {
+  const navigate = useNavigate()
+  const { iniciarSesion, sesionExpirada } = useAuth()
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [error, setError] = useState('')
@@ -34,9 +36,9 @@ function Login({ irA }) {
     setCargando(true)
     try {
       const datos = await cliente.login({ correo, contrasena })
-      // La respuesta exitosa dispara la acción global LOGIN.
-      iniciarSesion(datos.usuario)
-      irA('perfil')
+      // La respuesta exitosa dispara la acción global LOGIN y guarda el JWT.
+      iniciarSesion(datos.usuario, datos.token)
+      navigate('/perfil')
     } catch (e) {
       // 401: credenciales inválidas que devuelve la API.
       setError(e.message)
@@ -52,6 +54,12 @@ function Login({ irA }) {
         <p className="text-center mb-4">
           Accede a tu cuenta para ver tu perfil, tus pedidos y ofertas exclusivas.
         </p>
+
+        {sesionExpirada && (
+          <Alert variant="warning">
+            Su sesión ya no es válida o ha caducado. Por favor, inicie sesión nuevamente.
+          </Alert>
+        )}
 
         {error && <Alert variant="danger">{error}</Alert>}
 

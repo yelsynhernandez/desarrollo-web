@@ -22,6 +22,8 @@ services:
     environment:
       PORT: 5000
       MONGODB_URI: mongodb://mongo:27017/melodia_store
+      JWT_SECRET: ${JWT_SECRET:-clave_solo_para_desarrollo_local}
+      JWT_EXPIRES_IN: 5m
     ports:
       - "5000:5000"
     depends_on:

@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
 // POST /api/auth/register
@@ -52,7 +53,14 @@ export const iniciarSesion = async (req, res) => {
       return res.status(401).json({ mensaje: 'Credenciales inválidas.' })
     }
 
-    res.json({ mensaje: 'Inicio de sesión exitoso.', usuario })
+    // Firma el JWT con la identidad del usuario; expira según JWT_EXPIRES_IN (5m).
+    const token = jwt.sign(
+      { id: usuario._id, email: usuario.correo, role: usuario.rol },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '5m' }
+    )
+
+    res.json({ mensaje: 'Inicio de sesión exitoso.', token, usuario })
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al iniciar sesión.', error: error.message })
   }

@@ -11,6 +11,7 @@ import {
   Spinner,
   InputGroup
 } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import cliente from '../api/cliente'
 import { useAuth } from '../contexto/AuthContext'
 
@@ -33,7 +34,8 @@ const formularioVacio = () => ({
 const etiquetaCategoria = (id) =>
   (categorias.find((c) => c.id === id) || {}).etiqueta || id
 
-function AdminProductos({ irA }) {
+function AdminProductos() {
+  const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
   const [productos, setProductos] = useState([])
@@ -54,7 +56,7 @@ function AdminProductos({ irA }) {
     setCargando(true)
     setErrorCarga('')
     try {
-      const datos = await cliente.obtenerProductos(
+      const datos = await cliente.obtenerProductosAdmin(
         termino ? { busqueda: termino } : {}
       )
       setProductos(datos)
@@ -80,7 +82,7 @@ function AdminProductos({ irA }) {
               <Alert variant="warning" className="mb-4">
                 Debes iniciar sesión para crear, actualizar o eliminar productos.
               </Alert>
-              <Button variant="primary" onClick={() => irA('login')}>
+              <Button variant="primary" onClick={() => navigate('/login')}>
                 Iniciar Sesión
               </Button>
             </Card.Body>
